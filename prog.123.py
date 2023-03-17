@@ -22,7 +22,7 @@ def play_round():
     player_card = deck.pop()
     computer_card = deck.pop()
     
-    
+    # test
     print("ditt kort är:", player_card)
     print("datorn kort är:", computer_card)
     
