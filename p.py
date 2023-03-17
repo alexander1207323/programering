@@ -23,3 +23,4 @@ while svar == "j":
     print("vill du spela j/n: j")
     svar = input("vill du spela j/n: j")
 
+

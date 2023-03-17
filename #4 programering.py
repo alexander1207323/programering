@@ -1,30 +1,26 @@
-# tal som bara kan delas med 1 och sig självt är primtal. 
-primtal = [3]
-#for i in range(3,100):
-    #print(i)
+import random
+kort_värde = (2, 3, 4, 5, 5, 7, 8, 9, 10, 11, 12, 13, 14)
+färg = ("klöver", "diamonds", "hjärter","spader")
+klädda_kort = {
+    11: "J",
+    12: "Q",
+    13: "K",
+    14: "A",
+    15: "AA",
+}
+
+def generate_cards():
+    cards = []
+    for value in kort_värde:
+        for suit in färg:
+            if value in klädda_kort:
+                _card = (klädda_kort[value], färg)
+            else:
+                _card = (value, färg)
+            cards.append(_card)
+    return cards
+ 
+cards = generate_cards(kort_värde)
+
+
     
-    #kast.append(random.randrange(1,7))
-
-    # om 3 är ett primtal spara
-
-    # är 3 delbart med 2 -> nej -> primtal
-    if 3%2==1:
-        #3 är ett primtal
-        primtal.append(3)
-    # om 4 är ett primtal så spara
-    if 4%2==2:
-        not(primtal.apent(3)
-            
-    # är 4 delbart med 2 -> ja -> inte primtal
-    # om 5
-            if 5%2==1:
-            primtal.append(3)
-            
-            
-    # är 5 delbart med 2 -> nej
-    if 6%2==2:
-            not(primtal.apent(3)
-    # är 5 delbart med 3 -> nej
-    # -> 5 är primtal
-    # ...99
-

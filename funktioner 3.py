@@ -8,8 +8,9 @@ while not tal==42:
         svar=input("gissa på tal")
         tal = int(svar)
     elif tal>42:
-        print("gisning stort")
+        print("gisning för stort")
         svar=input("gissa på tal")
+        tal = int(svar)
         
     
 print("gisning rätt")       

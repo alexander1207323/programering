@@ -1,0 +1,12 @@
+# x^2 + px + q
+# ange p (kan vara negativ)
+# ange q (kan vara negativ)
+# lösning 1 ....
+# lösning 2 ...
+
+p = float(input("p: "))
+q = float(input("q: "))
+
+
+
+                 
