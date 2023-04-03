@@ -22,7 +22,7 @@ def play_round():
     player_card = deck.pop()
     computer_card = deck.pop()
     
-    # test
+    
     print("ditt kort är:", player_card)
     print("datorn kort är:", computer_card)
     
@@ -35,7 +35,7 @@ def play_round():
     elif player_value < computer_value:
         print("datorn van!")
     else:
-        print("!")
+        print("det blev lika!")
         
 
 def get_card_value(card):
