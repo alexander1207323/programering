@@ -1,0 +1,127 @@
+const crypto = require('crypto');
+
+// --- BEGIN: Fill these values
+// Hash (ID) of the mined EOS block in the future (assigned on the round start)
+const clientSeed = '0f2dd208fd2823c79c5db2560a99ae4a2795932c223ceef2e56740ef93db0be3';
+
+// Server seed created when new bet is created
+const yourServerSeed = 'efc97365afe67db27c2a9a7aea09f4aef160ba6a5a512ecd096a5759bab5341c';
+const opponentServerSeed = 'bb104caec1fe268aaf052da6d4e0937225545f85a906af7a229f2aed453755cc';
+
+// Numeric ID of the specific bet (used later in nonce)
+const yourBetId = 10005;
+const opponentBetId = 10007;
+// --- END: Fill these values
+// With example values ^ it will output `Your roll value: 14 --- Opponent's roll value: 26`
+// With example values ^ it will output `Your roll result: 3,3 --- Opponent's roll result: 5,3`
+// With example values ^ it will output `Your total of the roll: 6 --- Opponent's total of the roll: 8`
+// With example values ^ it will output `You lost`
+
+// Turn this on if you want to see all the messages
+const verboseMode = false;
+
+// Get possible dice rolls
+const diceRolls = getDoubleDiceRolls();
+const diceRollsLength = diceRolls.length;
+log(`Number of possible dice rolls: ${diceRollsLength}`);
+log(`Possible dice rolls: ${JSON.stringify(diceRolls)}`);
+
+// Verify roll until single winner left
+verifyRoll(1);
+
+/**
+ * Below this line are algorithmic functions used for calculating a roll value
+ * =============================================================================
+ */
+
+function log(message) {
+  if (verboseMode) {
+    console.log(message);
+  }
+}
+
+function getDoubleDiceRolls(numberOfSides = 6) {
+  return Array.from({ length: numberOfSides * numberOfSides }).map(
+    (v, i) => `${Math.floor(i / numberOfSides) + 1},${(i % numberOfSides) + 1}`,
+  );
+}
+
+/**
+ * @param rollNumber Which roll this is (used for nonce and only changes if roll was a draw)
+ */
+function verifyRoll(rollNumber) {
+  // Get nonce
+  const yourNonce = yourBetId + rollNumber;
+  const opponentNonce = opponentBetId + rollNumber;
+  log(`Roll number: ${rollNumber}`);
+  log(`Your nonce value: ${yourNonce}`);
+  log(`Opponent's nonce value: ${opponentNonce}`);
+
+  // Get seeds
+  const game = undefined;
+  const yourSeed = getCombinedSeed(game, yourServerSeed, clientSeed, yourNonce);
+  const opponentSeed = getCombinedSeed(game, opponentServerSeed, clientSeed, opponentNonce);
+
+  // Get random roll value using provided information
+  const max = diceRollsLength;
+  const yourRollValue = getRandomInt({ max, seed: yourSeed });
+  console.log(`Your roll value: ${yourRollValue}`);
+  const opponentRollValue = getRandomInt({ max, seed: opponentSeed });
+  console.log(`Opponent's roll value: ${opponentRollValue}`);
+
+  // Get result
+  const yourRollResult = diceRolls[yourRollValue];
+  const opponentRollResult = diceRolls[opponentRollValue];
+  log(`Selecting element (for you) at index "${yourRollValue}" from zero-indexed array of possible dice rolls`);
+  console.log(`Your roll result: ${yourRollResult}`);
+  log(`Selecting element (for opponent) at index "${opponentRollValue}" from zero-indexed array of possible dice rolls`);
+  console.log(`Opponent's roll result: ${opponentRollResult}`);
+  if (verboseMode) {
+    console.table(diceRolls);
+  }
+
+  // Get the total of roll
+  const yourRollTotal = yourRollResult.split(',').reduce((total, diceRoll) => total + +diceRoll, 0);
+  const opponentRollTotal = opponentRollResult.split(',').reduce((total, diceRoll) => total + +diceRoll, 0);
+  console.log(`Your total of the roll: ${yourRollTotal}`);
+  console.log(`Opponent's total of the roll: ${opponentRollTotal}`);
+
+  // Check who won
+  if (yourRollTotal === opponentRollTotal) {
+    console.log(`It's a draw, check next roll to find the final winner`);
+    console.log("\n\r");
+    verifyRoll(rollNumber + 1);
+  } else if (yourRollTotal > opponentRollTotal) {
+    console.log(`You won`);
+  } else {
+    console.log(`You lost`);
+  }
+}
+
+function getRandomInt({ max, seed }) {
+  // Get hash from seed
+  log(`Seed value: ${seed}`);
+  const hash = crypto.createHmac('sha256', seed).digest('hex');
+
+  // Get value from hash
+  const subHash = hash.slice(0, 13);
+  const valueFromHash = Number.parseInt(subHash, 16);
+
+  // Get dynamic result for this roll
+  const e = Math.pow(2, 52);
+  const result = valueFromHash / e;
+  return Math.floor(result * max);
+}
+
+function getCombinedSeed(game, serverSeed, clientSeed, nonce) {
+  // Add main parameters
+  const seedParameters = [serverSeed, clientSeed, nonce];
+
+  // Add game parameter if needed
+  if (game) {
+    seedParameters.unshift(game);
+  }
+
+  // Combine parameters to get seed value
+  return seedParameters.join('-')
+}
