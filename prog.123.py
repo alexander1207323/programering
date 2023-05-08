@@ -44,13 +44,15 @@ def get_card_value(card):
     if value == "Ace":
         return 14
     elif value == "kung":
-        return 13
+        return 13 
     elif value == "drotning":
         return 12
     elif value == "knekt":
         return 11
+   
     else:
         return int(value)
+
 
 
 while True:
@@ -60,5 +62,7 @@ while True:
         break
 
 print("tack för att du spela!")
+
+ 
 
 

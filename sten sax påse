@@ -1,0 +1,34 @@
+import random
+
+
+moves = ['sten', 'sax', 'påse']
+
+while True:
+   
+    player_move = input("Välj sten, sax eller påse: ").lower()
+    
+    
+    if player_move not in moves:
+        print("Ogiltigt drag, försök igen.")
+        continue
+    
+    
+    dator_move = random.choice(moves)
+    
+   
+    print("Datorn valde " + dator_move + ".")
+    
+   
+    if player_move == computer_move:
+        print("Det blev oavgjort!")
+    elif (player_move == 'sten' and dator_move == 'sax') or \
+         (player_move == 'sax' and dator_move == 'påse') or \
+         (player_move == 'påse' and dator_move == 'sten'):
+        print("Du vann!")
+    else:
+        print("Datorn vann!")
+    
+   
+    play_again = input("Vill du spela igen? (ja/nej): ").lower()
+    if play_again != 'ja':
+        break
