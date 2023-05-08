@@ -1,0 +1,7 @@
+import time
+timer = int(input("Ange tiden för timern i sekunder: "))
+while timer > 0:
+    print("Kvarvarande tid: ", timer, " sekunder")
+    time.sleep(1)
+    timer -= 1
+print("Tiden är slut!")
