@@ -1,17 +1,40 @@
 import random
-symboler = ["9", "8", "7", "6", "5", "4", "3", "2", "1"]
+class EnarmadBandit:
+    def __init__(self):
+        self.coins = 10
 
-withdraw = {
-    "9 9 9": 100,
-    "8 8 8": 75,
-    "7 7 7": 50,
-    "6 6 6": 30,
-    "5 5 5": 20,
-    "4 4 4": 15,
-    "3 3 3": 10,
-    "2 2 2": 5,
-    "1 1 1": 2
-}
+    def pull_lever(self):
+        self.coins -= 1
 
-spelare_bank=100
-bet=int
+        
+        symbols = '%', '¤', '£', '@'
+        results = [random.choice(symbols) for _ in range(3)]
+
+        
+        print("Resultat:", results)
+
+        
+        if all(symbol == results[0] for symbol in results):
+            print("Grattis, du vann!")
+            self.coins += 10
+        else:
+            print("Tyvärr, du förlorade!")
+
+        
+        print("Antal mynt:", self.coins)
+
+
+bandit = EnarmadBandit()
+
+while bandit.coins > 0:
+    print("Välkommen till enarmad bandit!")
+    print("Tryck på enter för att dra i spaken (eller q för att avsluta)")
+
+    choice = input()
+    if choice == 'q':
+        break
+
+    bandit.pull_lever()
+    print()
+
+print("Tack för att du spelade!")
