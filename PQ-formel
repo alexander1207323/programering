@@ -1,11 +1,16 @@
-# x^2 + px + q
-# ange p (kan vara negativ)
-# ange q (kan vara negativ)
-# lösning 1 ....
-# lösning 2 ...
+import math
+a = -7
+b = 4
+c = 5
+d = b**2 - 4*a*c
+if d < 0:
+    print("Den har inga lösningar ösninger")
+else:
+    x1 = (-b + math.sqrt(d)) / (2*a)
+    x2 = (-b - math.sqrt(d)) / (2*a)
+    print("Lösning 1: ", x1)
+    print("lösning 2: ", x2) 
 
-p = float(input("p: "))
-q = float(input("q: "))
 
 
 
